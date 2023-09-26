@@ -1,0 +1,14 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v4.2.1
+_src_path: https://github.com/jupyterlab/extension-template
+author_email: adrianmpw@gmail.com
+author_name: adrn
+has_binder: false
+has_settings: true
+kind: frontend
+labextension_name: jupyterlab_gist_it
+project_short_description: Upload Jupyter notebooks to GitHub Gist.
+python_name: jupyterlab_gist_it
+repository: https://github.com/adrn/jupyterlab-gist-it
+test: true
+
