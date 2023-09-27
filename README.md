@@ -3,8 +3,10 @@
 [![Github Actions Status](https://github.com/adrn/jupyterlab-gist-it/workflows/Build/badge.svg)](https://github.com/adrn/jupyterlab-gist-it/actions/workflows/build.yml)
 
 Upload a Jupyter notebook as a [Gist](https://gist.github.com/) with the click of a
-button. This is a Jupyterlab v4.0 compatible version of the original Jupyter notebook
-extension [Gist
+button.
+
+This is a Jupyterlab v4.0-compatible version of the original Jupyter notebook extension
+[Gist
 it](https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/nbextensions/gist_it/readme.html).
 
 ## Requirements
