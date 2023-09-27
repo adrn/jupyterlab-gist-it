@@ -10,10 +10,9 @@ import { ISettingRegistry } from '@jupyterlab/settingregistry';
 
 import GistItWidget, { PLUGIN_NAME } from './gistitwidget';
 
-
 export class GistItWidgetExtension
-  implements DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel> {
-
+  implements DocumentRegistry.IWidgetExtension<NotebookPanel, INotebookModel>
+{
   constructor(settingRegistry: ISettingRegistry) {
     this._settingRegistry = settingRegistry;
   }
@@ -33,17 +32,12 @@ const plugin: JupyterFrontEndPlugin<void> = {
   description: 'Upload Jupyter notebooks to GitHub Gist.',
   autoStart: true,
   optional: [ISettingRegistry],
-  activate: (
-    app: JupyterFrontEnd,
-    settingsRegistry: ISettingRegistry
-  ) => {
-
+  activate: (app: JupyterFrontEnd, settingsRegistry: ISettingRegistry) => {
     app.docRegistry.addWidgetExtension(
       'Notebook',
       new GistItWidgetExtension(settingsRegistry)
     );
     console.log('JupyterLab extension jupyterlab_gist_it is activated!');
-
   }
 };
 

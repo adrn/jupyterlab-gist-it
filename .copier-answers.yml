@@ -11,4 +11,3 @@ project_short_description: Upload Jupyter notebooks to GitHub Gist.
 python_name: jupyterlab_gist_it
 repository: https://github.com/adrn/jupyterlab-gist-it
 test: true
-
