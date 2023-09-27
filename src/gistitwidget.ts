@@ -20,7 +20,6 @@ export default class GistItWidget extends Widget {
       (settings: ISettingRegistry.ISettings) => {
         this._updateSettings(settings);
         settings.changed.connect(this._updateSettings.bind(this));
-        console.log('yo dog');
       },
       (err: Error) => {
         console.error(`Could not load settings for ${PLUGIN_NAME}: ${err}`);
