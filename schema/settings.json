@@ -1,0 +1,14 @@
+{
+  "title": "Gist It",
+  "description": "",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "personalAccessToken": {
+      "type": "string",
+      "title": "Personal Access Token",
+      "description": "A Github Personal Access Token with gist permissions.",
+      "default": ""
+    }
+  }
+}
