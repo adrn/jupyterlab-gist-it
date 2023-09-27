@@ -7,6 +7,10 @@ import { Octokit } from "@octokit/core";
 
 export const PLUGIN_NAME = 'jupyterlab_gist_it';
 
+const GITHUB_HEADER = {
+  'X-GitHub-Api-Version': '2022-11-28'
+}
+
 export interface IGistItSettings {
   personalAccessToken: string;
   }
@@ -28,7 +32,7 @@ export default class GistItWidget extends Widget {
     },
     (err: Error) => {
       console.error(
-      `Could not load settings, so did not active ${PLUGIN_NAME}: ${err}`
+      `Could not load settings for ${PLUGIN_NAME}: ${err}`
       );
     }
   );
@@ -56,18 +60,17 @@ export default class GistItWidget extends Widget {
       if (gist_info == null || gist_info.gist_id == null) {
         console.log('Creating new gist');
 
+        const title = this._panel.title['_label'] as string;
+        const content = model.toString();
+        let files = { [title]: {"content": content } };
+        console.log(files)
+
         // TODO: check response code and error handling...
         const resp = await octokit.request('POST /gists', {
-          description: 'Example of a gist',
-          'public': false,
-          files: {
-            'README.md': {
-            content: 'Hello World'
-            }
-          },
-          headers: {
-            'X-GitHub-Api-Version': '2022-11-28'
-          }
+          description: '', // TODO: add option to specify a description
+          'public': false, // TODO: add option to specify private/public
+          files: files,
+          headers: GITHUB_HEADER
           });
 
         console.log(resp);
@@ -94,12 +97,10 @@ export default class GistItWidget extends Widget {
         // TODO: check response code and error handling...
         const resp = await octokit.request(`GET /gists/${gist_info.gist_id}`, {
           gist_id: gist_info.gist_id,
-          headers: {
-            'X-GitHub-Api-Version': '2022-11-28'
-          }
+          headers: GITHUB_HEADER
         });
 
-        Notification.warning(`Gist already exists at ${resp.data.html_url}`, {
+        Notification.warning(`Gist already exists ${resp.data.id}`, {
           actions: [
             // @ts-ignore:next-line
             { label: 'Copy URL', callback: () => navigator.clipboard.writeText(resp.data.html_url) },
