@@ -1,12 +1,10 @@
 import { Widget } from '@lumino/widgets';
-// import { JSONExt, JSONObject } from '@lumino/coreutils';
 import { NotebookPanel } from '@jupyterlab/notebook';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 
 import {
     ToolbarButton,
   } from '@jupyterlab/apputils';
-// import { IDisposable, DisposableDelegate } from '@lumino/disposable';
 
 export const PLUGIN_NAME = 'jupyterlab_gist_it';
 
@@ -57,11 +55,6 @@ export default class GistItWidget extends Widget {
     buttons.forEach((item) => {
         panel.toolbar.insertItem(9, item[0], item[1]);
     });
-    // return new DisposableDelegate(() => {
-    //     buttons.forEach((item) => {
-    //     item[1].dispose();
-    //     });
-    // });
   }
 
   _updateSettings(settings: ISettingRegistry.ISettings) {
