@@ -10,33 +10,6 @@ export interface IGistItSettings {
   personalAccessToken: string;
 }
 
-// TODO: move elsewhere
-export class GistItDialog extends Widget {
-  constructor() {
-    super({ node: GistItDialog.createFormNode() });
-  }
-
-  getValue(): string {
-    // @ts-ignore:next-line
-    return this.node.querySelector('input').value.trim();
-  }
-
-  private static createFormNode(): HTMLElement {
-    const node = document.createElement('div');
-    const label = document.createElement('label');
-    const input = document.createElement('input');
-    const text = document.createElement('span');
-
-    text.textContent = 'Description: ';
-    input.placeholder = '';
-
-    label.appendChild(text);
-    label.appendChild(input);
-    node.appendChild(label);
-    return node;
-  }
-}
-
 export default class GistItWidget extends Widget {
   constructor(panel: NotebookPanel, settingRegistry: ISettingRegistry) {
     super();
@@ -55,7 +28,7 @@ export default class GistItWidget extends Widget {
     );
 
     // Set up notebook metadata:
-    let model = this._panel.model;
+    const model = this._panel.model;
 
     const buttons: Array<[string, ToolbarButton]> = [];
     buttons.push([
@@ -64,7 +37,7 @@ export default class GistItWidget extends Widget {
         className: 'gistItSend',
         iconClass: 'fa fa-github ',
         onClick: async () => {
-          if (model == null) {
+          if (model === null) {
             // TODO: notification error
             return;
           }
@@ -72,13 +45,13 @@ export default class GistItWidget extends Widget {
           console.log(gist_info);
 
           console.log(`Sup. ${this._settings.personalAccessToken} stuff`);
-          let gh = new GistHelper(
+          const gh = new GistHelper(
             this._settings.personalAccessToken,
             this._panel,
             model
           );
 
-          if (gist_info == null || gist_info.gist_id == null) {
+          if (gist_info === null || gist_info.gist_id === null) {
             console.log('Creating new gist');
             gist_info = await gh.createGist();
           } else {

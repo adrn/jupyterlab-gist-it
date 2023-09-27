@@ -23,8 +23,12 @@ export class GistItDialog extends Widget {
   }
 
   getValue(): string {
-    // @ts-ignore:next-line
-    return this.node.querySelector('input').value.trim();
+    const input = this.node.querySelector('input');
+    let value = '';
+    if (input !== null) {
+      value = input.value.trim();
+    }
+    return value;
   }
 
   public static createFormNode(
@@ -64,7 +68,7 @@ export class GistHelper {
     panel: NotebookPanel,
     model: INotebookModel
   ) {
-    if (accessToken == null || accessToken == '') {
+    if (accessToken === null || accessToken === '') {
       throw new Error('A Personal Access Token is required');
     }
     this.octokit = new Octokit({ auth: accessToken });
@@ -75,7 +79,7 @@ export class GistHelper {
   public getFiles(): any {
     const title = this.panel.title['_label'] as string;
     const content = this.model.toString();
-    let files = { [title]: { content: content } };
+    const files = { [title]: { content: content } };
     return files;
   }
 
@@ -92,7 +96,7 @@ export class GistHelper {
     // console.log(result);
 
     let _public, description;
-    if (result.button.label == 'Cancel') {
+    if (result.button.label === 'Cancel') {
       return {} as IGistInfo;
     } else {
       _public = !result.isChecked;
@@ -100,10 +104,10 @@ export class GistHelper {
     }
     console.log(_public, description);
 
-    let files = this.getFiles();
+    const files = this.getFiles();
     console.log(files);
 
-    let gist_info = {} as IGistInfo;
+    const gist_info = {} as IGistInfo;
     try {
       const resp = await this.octokit.request('POST /gists', {
         description: description,
@@ -118,10 +122,13 @@ export class GistHelper {
 
       Notification.success(`Created a new gist ${gist_info.gist_id}`, {
         actions: [
-          // @ts-ignore:next-line
           {
             label: 'Copy URL',
-            callback: () => navigator.clipboard.writeText(resp.data.html_url)
+            callback: () => {
+              if (gist_info.gist_url !== undefined) {
+                navigator.clipboard.writeText(gist_info.gist_url);
+              }
+            }
           },
           {
             label: 'Open Gist',
@@ -131,13 +138,12 @@ export class GistHelper {
         autoClose: 10000
       });
     } catch (error: any) {
-      Notification.error(`Failed to create Gist`, {
+      Notification.error('Failed to create Gist', {
         autoClose: 5000
       });
       return gist_info;
     }
 
-    // @ts-ignore:next-line
     this.model.setMetadata('gist_info', gist_info);
     console.log('Saved metadata', gist_info);
 
@@ -156,7 +162,7 @@ export class GistHelper {
         }
       );
     } catch (error: any) {
-      if (error.status == 404) {
+      if (error.status === 404) {
         // Gist doesn't exist on GitHub, but it does in the notebook metadata
         console.log(
           "Gist doesn't exist, but notebook metadata contains a Gist ID"
@@ -168,9 +174,9 @@ export class GistHelper {
         });
         console.log(result);
 
-        if (result.button.label == 'Cancel') {
+        if (result.button.label === 'Cancel') {
           return {} as IGistInfo;
-        } else if (result.button.label == 'Ok') {
+        } else if (result.button.label === 'Ok') {
           return this.createGist();
         } else {
           throw new Error('Unexpected error');
@@ -194,13 +200,13 @@ export class GistHelper {
     });
 
     let description;
-    if (result.button.label == 'Cancel') {
+    if (result.button.label === 'Cancel') {
       return {} as IGistInfo;
     } else {
       description = result.value ? result.value : '';
     }
 
-    let gist_info = {} as IGistInfo;
+    const gist_info = {} as IGistInfo;
     try {
       const resp = await this.octokit.request(
         `PATCH /gists/${oldGistInfo.gist_id}`,
@@ -216,10 +222,13 @@ export class GistHelper {
 
       Notification.success(`Updated gist ${gist_info.gist_id}`, {
         actions: [
-          // @ts-ignore:next-line
           {
             label: 'Copy URL',
-            callback: () => navigator.clipboard.writeText(resp.data.html_url)
+            callback: () => {
+              if (gist_info.gist_url !== undefined) {
+                navigator.clipboard.writeText(gist_info.gist_url);
+              }
+            }
           },
           {
             label: 'Open Gist',
@@ -234,7 +243,6 @@ export class GistHelper {
       });
     }
 
-    // @ts-ignore:next-line
     this.model.setMetadata('gist_info', gist_info);
     console.log('Saved metadata', gist_info);
 
