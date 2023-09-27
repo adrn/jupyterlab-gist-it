@@ -2,7 +2,7 @@ import { Widget } from '@lumino/widgets';
 import { NotebookPanel } from '@jupyterlab/notebook';
 import { ISettingRegistry } from '@jupyterlab/settingregistry';
 import { ToolbarButton } from '@jupyterlab/apputils';
-import { Notification } from '@jupyterlab/apputils';
+import { showDialog, Notification } from '@jupyterlab/apputils';
 import { Octokit } from "@octokit/core";
 
 export const PLUGIN_NAME = 'jupyterlab_gist_it';
@@ -14,6 +14,33 @@ const GITHUB_HEADER = {
 export interface IGistItSettings {
   personalAccessToken: string;
   }
+
+// TODO: move elsewhere
+export class GistItDialog extends Widget {
+   constructor() {
+    super({ node: GistItDialog.createFormNode() });
+  }
+
+  getValue(): string {
+    // @ts-ignore:next-line
+    return this.node.querySelector('input').value.trim();
+  }
+
+  private static createFormNode(): HTMLElement {
+    const node = document.createElement('div');
+    const label = document.createElement('label');
+    const input = document.createElement('input');
+    const text = document.createElement('span');
+
+    text.textContent = 'Description: ';
+    input.placeholder = '';
+
+    label.appendChild(text);
+    label.appendChild(input);
+    node.appendChild(label);
+    return node;
+  }
+}
 
 export default class GistItWidget extends Widget {
   constructor(
@@ -60,6 +87,26 @@ export default class GistItWidget extends Widget {
       if (gist_info == null || gist_info.gist_id == null) {
         console.log('Creating new gist');
 
+        const result = await showDialog({
+          title: 'Upload Gist',
+          body: new GistItDialog(),
+          checkbox: {
+            label: 'Private?',
+            caption: 'private',
+            checked: false,
+          }
+        });
+        // console.log(result);
+
+        let _public, description;
+        if (result.button.label == 'Cancel') {
+          return;
+        } else {
+          _public = !result.isChecked;
+          description = result.value ? result.value : "";
+        }
+        console.log(_public, description);
+
         const title = this._panel.title['_label'] as string;
         const content = model.toString();
         let files = { [title]: {"content": content } };
@@ -67,10 +114,10 @@ export default class GistItWidget extends Widget {
 
         // TODO: check response code and error handling...
         const resp = await octokit.request('POST /gists', {
-          description: '', // TODO: add option to specify a description
-          'public': false, // TODO: add option to specify private/public
-          files: files,
-          headers: GITHUB_HEADER
+          'description': description,
+          'public': _public,
+          'files': files,
+          'headers': GITHUB_HEADER
           });
 
         console.log(resp);
