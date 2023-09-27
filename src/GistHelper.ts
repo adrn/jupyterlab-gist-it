@@ -102,10 +102,10 @@ export class GistHelper {
       _public = !result.isChecked;
       description = result.value ? result.value : '';
     }
-    console.log(_public, description);
+    // console.log(_public, description);
 
     const files = this.getFiles();
-    console.log(files);
+    // console.log(files);
 
     const gist_info = {} as IGistInfo;
     try {
@@ -145,7 +145,7 @@ export class GistHelper {
     }
 
     this.model.setMetadata('gist_info', gist_info);
-    console.log('Saved metadata', gist_info);
+    // console.log('Saved metadata', gist_info);
 
     return gist_info;
   }
@@ -172,7 +172,7 @@ export class GistHelper {
           title:
             'Gist does not exist on GitHub but a Gist ID is stored in the notebook metadata. Create a new Gist instead?'
         });
-        console.log(result);
+        // console.log(result);
 
         if (result.button.label === 'Cancel') {
           return {} as IGistInfo;
@@ -188,7 +188,7 @@ export class GistHelper {
         throw error;
       }
     }
-    console.log(initResp);
+    // console.log(initResp);
 
     // Gist exists - ask to update
     const result = await showDialog({
@@ -244,7 +244,7 @@ export class GistHelper {
     }
 
     this.model.setMetadata('gist_info', gist_info);
-    console.log('Saved metadata', gist_info);
+    // console.log('Saved metadata', gist_info);
 
     return gist_info;
   }

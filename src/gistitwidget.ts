@@ -39,11 +39,15 @@ export default class GistItWidget extends Widget {
           if (model === null) {
             // TODO: notification error
             return;
+          } else if (this._settings.personalAccessToken === '') {
+            window.alert(
+              "Please save a GitHub personal access token (with Gist access) in the Gist It settings."
+            );
+            return;
           }
           let gist_info = model.getMetadata('gist_info');
-          console.log(gist_info);
+          // console.log(gist_info);
 
-          console.log(`Sup. ${this._settings.personalAccessToken} stuff`);
           const gh = new GistHelper(
             this._settings.personalAccessToken,
             this._panel,
@@ -51,10 +55,10 @@ export default class GistItWidget extends Widget {
           );
 
           if (gist_info === null || gist_info.gist_id === null) {
-            console.log('Creating new gist');
+            // console.log('Creating new gist');
             gist_info = await gh.createGist();
           } else {
-            console.log(`gist already exists: ${gist_info.gist_id}`);
+            // console.log(`gist already exists: ${gist_info.gist_id}`);
             gist_info = await gh.updateGist(gist_info);
           }
         },
