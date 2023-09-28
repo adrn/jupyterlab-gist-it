@@ -5,6 +5,8 @@
 Upload a Jupyter notebook as a [Gist](https://gist.github.com/) with the click of a
 button.
 
+![Gist It Screencast Demo](https://github.com/adrn/jupyterlab-gist-it/blob/main/docs/gist-it-demo.gif?raw=true)
+
 This is a Jupyterlab v4.0-compatible version of the original Jupyter notebook extension
 [Gist
 it](https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/nbextensions/gist_it/readme.html).
@@ -20,6 +22,14 @@ To install the extension, execute:
 ```bash
 pip install jupyterlab_gist_it
 ```
+
+You may then have to restart your Jupyter server. You will then need to go into the
+settings editor under Settings > Settings Editor > Gist It and enter a GitHub personal
+access token. You can generate a token following instructions
+[here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
+We recommend using a (new) [fine-grained
+token](https://github.blog/2022-10-18-introducing-fine-grained-personal-access-tokens-for-github/)
+with only Gist permissions.
 
 ## Uninstall
 
