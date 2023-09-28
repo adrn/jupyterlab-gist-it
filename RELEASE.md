@@ -44,7 +44,7 @@ python -m build
 Then to upload the package to PyPI, do:
 
 ```bash
-twine upload dist/*
+twine --repository jupyterlab-gist-it upload dist/*
 ```
 
 ### NPM package
