@@ -41,7 +41,7 @@ export default class GistItWidget extends Widget {
             return;
           } else if (this._settings.personalAccessToken === '') {
             window.alert(
-              "Please save a GitHub personal access token (with Gist access) in the Gist It settings."
+              'Please save a GitHub personal access token (with Gist access) in the Gist It settings.'
             );
             return;
           }
