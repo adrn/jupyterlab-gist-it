@@ -54,7 +54,7 @@ export default class GistItWidget extends Widget {
             model
           );
 
-          if (gist_info === null || gist_info.gist_id === null) {
+          if (gist_info === undefined || gist_info.gist_id === undefined) {
             // console.log('Creating new gist');
             gist_info = await gh.createGist();
           } else {
